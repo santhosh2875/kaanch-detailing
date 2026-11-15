@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lustre</title>
+  <meta name="description" content="Car and bike detailing. Scroll to watch a detail happen one layer at a time, then build your own and book it.">
+  <meta name="theme-color" content="#141a17">
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#book">Skip to booking</a>
+
+  <header class="bar">
+    <a class="brand" href="#top">
+      <span class="brand-name" id="brand">LUSTRE</span>
+      <span class="brand-line" id="brandLine"></span>
+    </a>
+
+    <div class="switch" role="radiogroup" aria-label="Vehicle" id="vehicleSwitch"></div>
+
+    <nav class="nav" aria-label="Main">
+      <a href="#top">Process</a>
+      <a href="#book">Book</a>
+      <a href="#results">Results</a>
+      <a href="#studio">Studio</a>
+    </nav>
+
+    <a class="chip" id="chip" href="#book"></a>
+  </header>
+
+  <main>
+    <!-- The scroll film: one still per stage, painted on a canvas by app.js,
+         each wiped in over the last -->
+    <section class="film" id="top" aria-label="How a detail goes, stage by stage">
+      <div class="film-pin">
+        <div class="stage" id="stage" aria-hidden="true">
+          <canvas id="filmCanvas"></canvas>
+        </div>
+
+        <article class="tag" id="tag" aria-live="polite">
+          <p class="tag-step"><span id="tagNum"></span><span id="tagService"></span></p>
+          <h1 class="tag-title" id="tagTitle"></h1>
+          <p class="tag-text" id="tagText"></p>
+          <div class="tag-foot">
+            <span class="tag-time" id="tagTime"></span>
+            <span class="tag-price" id="tagPrice"></span>
+            <button class="pick" id="tagPick" type="button" aria-pressed="false"></button>
+          </div>
+        </article>
+
+        <ol class="rail" id="rail" aria-label="Stages"></ol>
+      </div>
+    </section>
+
+    <!-- Job card: pick services, see the total, send the booking -->
+    <section class="section" id="book" aria-labelledby="bookTitle">
+      <div class="wrap">
+        <header class="head">
+          <h2 class="display" id="bookTitle" data-reveal>Build your detail.</h2>
+          <p class="lede" data-reveal>Tick what you want done. The total updates as you go, and the booking goes straight to our WhatsApp.</p>
+        </header>
+
+        <div class="book-grid">
+          <div class="card" data-reveal>
+            <div class="card-head">
+              <h3>Job card</h3>
+              <p id="cardVehicle"></p>
+            </div>
+            <ul class="lines" id="lines"></ul>
+            <div class="total">
+              <span>Total</span>
+              <span id="totalTime"></span>
+              <strong id="totalPrice"></strong>
+            </div>
+            <p class="card-error" id="linesErr" role="alert"></p>
+          </div>
+
+          <form class="form" id="bookForm" novalidate data-reveal>
+            <div class="field">
+              <label for="fName">Your name</label>
+              <input id="fName" name="name" type="text" autocomplete="name" required aria-describedby="fNameErr">
+              <p class="field-error" id="fNameErr"></p>
+            </div>
+            <div class="field">
+              <label for="fPhone">Phone</label>
+              <input id="fPhone" name="phone" type="tel" autocomplete="tel" required aria-describedby="fPhoneErr">
+              <p class="field-error" id="fPhoneErr"></p>
+            </div>
+            <div class="field">
+              <label for="fModel">Make and model <span class="optional">(optional)</span></label>
+              <input id="fModel" name="model" type="text">
+            </div>
+            <div class="field">
+              <label for="fDay">Preferred day <span class="optional">(optional)</span></label>
+              <input id="fDay" name="day" type="date">
+            </div>
+            <label class="check">
+              <input id="fPickup" name="pickup" type="checkbox">
+              <span id="pickupLabel"></span>
+            </label>
+            <button class="btn" type="submit">Send booking on WhatsApp</button>
+            <p class="form-status" id="formStatus" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Before and after: drag to compare the first and last stage -->
+    <section class="section section-dark" id="results" aria-labelledby="resTitle">
+      <div class="wrap">
+        <header class="head">
+          <h2 class="display" id="resTitle" data-reveal>Same vehicle. Same day.</h2>
+          <p class="lede" data-reveal>Drag the line to compare how it came in with how it left.</p>
+        </header>
+        <div class="compare" id="compare" data-reveal>
+          <div class="compare-shot compare-after" id="shotAfter"></div>
+          <div class="compare-shot compare-before" id="shotBefore"></div>
+          <span class="compare-label compare-label-before">Before</span>
+          <span class="compare-label compare-label-after">After</span>
+          <div class="compare-handle" aria-hidden="true"></div>
+          <input class="compare-range" id="compareRange" type="range" min="0" max="100" value="50" aria-label="Show more of the before or the after picture">
+        </div>
+      </div>
+    </section>
+
+    <!-- Studio -->
+    <section class="section" id="studio" aria-labelledby="studioTitle">
+      <div class="wrap studio-grid">
+        <h2 class="display" id="studioTitle" data-reveal>Find the bay.</h2>
+        <dl class="facts" data-reveal>
+          <div><dt>Address</dt><dd id="sAddress"></dd></div>
+          <div><dt>Hours</dt><dd id="sHours"></dd></div>
+          <div><dt>Pick-up</dt><dd id="sPickup"></dd></div>
+          <div><dt>Phone</dt><dd><a id="sPhone"></a></dd></div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-row">
+      <p class="footer-mark" id="footMark">LUSTRE</p>
+      <p class="footer-note">Demo site. Prices, address and phone number are placeholders. Vehicle images are computer-generated.</p>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

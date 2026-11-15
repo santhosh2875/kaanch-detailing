@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Image guide | Lustre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --haze: #eef3f2;
+      --sheet: #ffffff;
+      --ink: #0d1820;
+      --ink-soft: #4a5a63;
+      --line: #cfdad9;
+      --sea: #1c5d6a;
+      --sea-tint: #e0ebea;
+      --dawn: #f1d6a8;
+      --ok: #1f7a55;
+      --display: "Bodoni Moda", "Didot", serif;
+      --text: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--haze);
+      color: var(--ink);
+      font-family: var(--text);
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :focus-visible { outline: 2px solid var(--sea); outline-offset: 2px; border-radius: 4px; }
+
+    code { font-family: var(--mono); font-size: 0.88em; background: var(--sea-tint); padding: 0.1em 0.35em; border-radius: 4px; }
+
+    /* ---------- Sticky bar: progress + the one global choice ---------- */
+    .bar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 20px;
+      padding: 10px clamp(16px, 4vw, 40px);
+      background: rgba(238, 243, 242, 0.92);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .progress { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; font-weight: 500; }
+    .meter { width: 120px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+    .meter span { display: block; height: 100%; width: 0; background: var(--ok); transition: width 300ms ease; }
+
+    .linkbtn {
+      border: 0; background: none; padding: 0; font: inherit; font-size: 0.9rem;
+      color: var(--sea); text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+    }
+
+    .mode { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 0.92rem; }
+    .seg { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--line); }
+    .seg label { position: relative; cursor: pointer; }
+    .seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+    .seg span { display: block; padding: 5px 14px; border-radius: 999px; font-weight: 600; color: var(--ink-soft); }
+    .seg input:checked + span { background: var(--ink); color: var(--haze); }
+    .seg input:focus-visible + span { outline: 2px solid var(--sea); outline-offset: 2px; }
+
+    /* ---------- Page ---------- */
+    main { max-width: 860px; margin: 0 auto; padding: clamp(24px, 5vw, 56px) clamp(16px, 4vw, 40px) 80px; }
+
+    h1 { margin: 0 0 0.3em; font-family: var(--display); font-weight: 400; font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.08; letter-spacing: -0.01em; }
+    .lede { margin: 0; max-width: 62ch; color: var(--ink-soft); font-size: 1.05rem; }
+
+    .setting { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; padding: 16px; background: var(--sheet); border: 1px solid var(--line); border-radius: 12px; }
+    .setting label { display: grid; gap: 4px; flex: 1 1 200px; font-size: 0.85rem; font-weight: 600; color: var(--ink-soft); }
+    .setting input { font: inherit; font-size: 1rem; color: var(--ink); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--haze); }
+    .setting p { flex-basis: 100%; margin: 0; font-size: 0.88rem; color: var(--ink-soft); }
+
+    .step { margin-top: clamp(40px, 7vw, 72px); }
+    .step > h2 { display: flex; align-items: baseline; gap: 14px; margin: 0 0 6px; font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
+    .step > h2 .num { font-family: var(--display); font-weight: 400; font-size: 2.2rem; color: var(--sea); }
+    .step > p { margin: 0 0 18px; max-width: 66ch; color: var(--ink-soft); }
+
+    /* Model recommendation */
+    .model { padding: 18px 20px; border-radius: 12px; background: var(--ink); color: var(--haze); }
+    .model .label { margin: 0; font-size: 0.85rem; color: rgba(238, 243, 242, 0.7); }
+    .model .name { margin: 2px 0 6px; font-size: 1.45rem; font-weight: 700; line-height: 1.2; }
+    .model .name small { margin-left: 8px; font-size: 0.85rem; font-weight: 400; color: rgba(238, 243, 242, 0.7); }
+    .model .why { margin: 0 0 12px; max-width: 64ch; color: rgba(238, 243, 242, 0.86); }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+    .chips li { padding: 4px 11px; border-radius: 999px; background: rgba(241, 214, 168, 0.16); border: 1px solid rgba(241, 214, 168, 0.5); color: var(--dawn); font-size: 0.88rem; font-weight: 500; }
+    .model details { margin-top: 14px; font-size: 0.92rem; }
+    .model summary { cursor: pointer; color: rgba(238, 243, 242, 0.86); }
+    .model details ul { margin: 8px 0 0; padding-left: 1.1em; color: rgba(238, 243, 242, 0.86); }
+    .model details li { margin: 3px 0; }
+    .model details b { color: var(--haze); }
+
+    /* One card per file to generate */
+    .asset { margin-top: 14px; padding: 16px 18px; background: var(--sheet); border: 1px solid var(--line); border-radius: 12px; }
+    .asset.is-found { border-color: var(--ok); }
+    .asset-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 10px; }
+    .asset-head h3 { margin: 0; font-size: 1.05rem; font-weight: 700; }
+    .status { margin-left: auto; padding: 2px 10px; border-radius: 999px; font-size: 0.82rem; font-weight: 600; background: var(--haze); color: var(--ink-soft); border: 1px solid var(--line); }
+    .is-found .status { background: #dff1e8; color: var(--ok); border-color: #a9d6c0; }
+
+    .asset-body { display: flex; gap: 14px; align-items: flex-start; }
+    .prompt { flex: 1; margin: 0; padding: 12px 14px; border-left: 3px solid var(--sea); border-radius: 0 8px 8px 0; background: var(--sea-tint); font-size: 0.95rem; white-space: pre-wrap; }
+    .preview { flex: none; width: 150px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); }
+    .preview[hidden] { display: none; }
+
+    .asset-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 12px; font-size: 0.9rem; color: var(--ink-soft); }
+    .copy { border: 0; border-radius: 999px; padding: 7px 16px; background: var(--sea); color: #fff; font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+    .copy:hover { background: #164b56; }
+    .copy.is-done { background: var(--ok); }
+
+    .note { margin: 14px 0 0; padding: 12px 14px; border-radius: 10px; background: #fbf1dc; border: 1px solid #ecd9ae; font-size: 0.93rem; }
+
+    .files { margin: 0; padding: 14px 16px; border-radius: 10px; background: var(--ink); color: var(--haze); font-family: var(--mono); font-size: 0.86rem; line-height: 1.7; overflow-x: auto; }
+
+    @media (max-width: 620px) {
+      .bar { position: static; }
+      .mode { margin-left: 0; }
+      .asset-body { flex-direction: column; }
+      .preview { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { .meter span { transition: none; } }
+  </style>
+</head>
+<body>
+  <div class="bar">
+    <div class="progress" aria-live="polite">
+      <div class="meter" aria-hidden="true"><span id="meterFill"></span></div>
+      <span id="progressText">Checking folder</span>
+      <button class="linkbtn" id="recheck" type="button">Check folder again</button>
+    </div>
+  </div>
+
+  <main>
+    <h1>Ten stills, no video</h1>
+    <p class="lede">
+      The site wipes from one picture to the next as you scroll, so it needs five stills of the car
+      and five of the bike, and nothing else. Each card turns green by itself when its file is in
+      <code>assets/stages</code>.
+    </p>
+
+    <div class="setting">
+      <label>The car
+        <input id="car" type="text" autocomplete="off">
+      </label>
+      <label>The bike
+        <input id="bike" type="text" autocomplete="off">
+      </label>
+      <p>These fill into the prompts below. The room is dark, so a rich colour such as green, red or blue shows up better than black.</p>
+    </div>
+
+    <p class="note">
+      <b>The one rule that matters:</b> the five pictures of a vehicle must line up exactly. Same
+      vehicle, same camera angle, same room. If a version comes back with the vehicle moved, resized
+      or redesigned, regenerate it. Small differences in reflections are fine.
+    </p>
+
+    <section class="step">
+      <h2><span class="num">1</span> The dirty car</h2>
+      <p>Text to image. This is the master: every other car picture is an edit of it, so retry until you like the car and the room.</p>
+      <div class="model" data-model="master"></div>
+      <div data-assets="car-master"></div>
+    </section>
+
+    <section class="step">
+      <h2><span class="num">2</span> The same car in four more states</h2>
+      <p>Image to image. Upload <code>car-1-dirty</code> as the reference every time. The prompts only change the surface of the car.</p>
+      <div class="model" data-model="edit"></div>
+      <div data-assets="car-edit"></div>
+    </section>
+
+    <section class="step">
+      <h2><span class="num">3</span> The dirty bike</h2>
+      <p>Text to image, the same way as the car. To get the same room, you can also add <code>car-1-dirty</code> as a reference; the prompt then asks for that room with a motorcycle in place of the car.</p>
+      <div class="model" data-model="master"></div>
+      <div data-assets="bike-master"></div>
+    </section>
+
+    <section class="step">
+      <h2><span class="num">4</span> The same bike in four more states</h2>
+      <p>Image to image. Upload <code>bike-1-dirty</code> as the reference every time.</p>
+      <div class="model" data-model="edit"></div>
+      <div data-assets="bike-edit"></div>
+    </section>
+
+    <section class="step">
+      <h2><span class="num">5</span> Put the files in the site</h2>
+      <p>Save every download into <code>assets/stages</code> with exactly these names. JPG, PNG or WebP all work. Then open <a href="index.html">the website</a> and reload.</p>
+      <pre class="files">assets/stages/car-1-dirty.jpg     assets/stages/bike-1-dirty.jpg
+assets/stages/car-2-foam.jpg      assets/stages/bike-2-foam.jpg
+assets/stages/car-3-rinse.jpg     assets/stages/bike-3-rinse.jpg
+assets/stages/car-4-polish.jpg    assets/stages/bike-4-polish.jpg
+assets/stages/car-5-coat.jpg      assets/stages/bike-5-coat.jpg</pre>
+    </section>
+  </main>
+
+  <script>
+  (() => {
+    "use strict";
+
+    const DIR = "assets/stages";
+    const STILL_TYPES = ["jpg", "png", "webp", "jpeg"];
+    const DEFAULTS = {
+      car: "Porsche 911 coupe in deep bottle-green metallic paint",
+      bike: "adventure touring motorcycle with a bottle-green fuel tank",
+    };
+
+    const MODELS = {
+      master: {
+        name: "Nano Banana Pro", by: "Google",
+        why: "Marked Unlimited in your Higgsfield account, so with the Unlimited switch on it costs no credits, and it is the strongest photorealistic model for this.",
+        chips: ["Unlimited switch on", "Aspect ratio 16:9", "Resolution 2K", "No reference image"],
+        others: [["Seedream 4.5", "Also marked Unlimited, up to 4K. A good backup if you don't like the vehicle you get."]],
+      },
+      edit: {
+        name: "Nano Banana Pro", by: "Google",
+        why: "It edits a reference image while keeping the vehicle, angle and room in place, which is exactly what the wipes need. Stay on the same model as the master.",
+        chips: ["Unlimited switch on", "Reference image: the dirty still", "Aspect ratio 16:9", "Resolution 2K"],
+        others: [["Seedream 4.5", "Also marked Unlimited. It tends to redraw more of the picture than Nano Banana Pro, so check each edit against the dirty still before saving it."]],
+      },
+    };
+
+    const BAY = "parked in the centre of a dark, premium detailing bay at night: matte charcoal walls, a glossy black tiled floor with a steel drain grate, lit by one very large rectangular softbox light panel directly overhead so that it stands in a pool of soft white light while the edges of the room fall into shadow, with a coiled yellow pressure-washer hose on the dark wall behind";
+    const keep = (thing) => `Edit the reference image. This is a retouch of the same photograph, not a new photograph. Everything must stay perfectly aligned with the reference: the same ${thing} with the same body shape, wheels and proportions, in exactly the same position and at the same size in the frame; the same camera position, height, lens and crop; the same walls, overhead light panel, hose, floor and drain grate, with the same darkness at the edges of the room. Do not move, rotate, zoom, crop, restyle or redesign anything, and do not add or remove any object. The only thing that changes is the surface condition of the ${thing}, as follows: `;
+
+    const STATES = [
+      { n: 2, file: "foam", title: "Covered in foam",
+        change: (t) => `the whole ${t} is now covered in a thick layer of white snow foam, with foam sliding slowly down its sides and pooling on the floor around the tyres. No mud is visible.` },
+      { n: 3, file: "rinse", title: "Rinsed and wet",
+        change: (t) => `the ${t} is freshly rinsed and completely clean but still wet: water beads and droplets all over the paint, thin sheets of water running down its sides, and a wet floor with water flowing towards the drain. No foam and no mud. The paint looks clean but slightly dull, with faint swirl marks in the reflections.` },
+      { n: 4, file: "polish", title: "Polished",
+        change: (t) => `the ${t} is dry and freshly machine polished: deep, glossy paint with a crisp reflection of the overhead light panel, clean wheels and a dry floor.` },
+      { n: 5, file: "coat", title: "Ceramic coated",
+        change: (t) => `the ${t} has a ceramic-coated showroom finish: mirror-like paint with an intense wet-look gloss that reflects the room, and jet-black dressed tyres. The overhead light is slightly dimmer and a warm golden light comes in from an open shutter door out of frame on the left, glowing along the side of the ${t} and reflecting in the black floor.` },
+    ];
+
+    const ASSETS = [
+      { group: "car-master", file: "car-1-dirty", title: "Dirty car",
+        prompt: () => `Photorealistic wide photograph taken from several metres back, three-quarter front view from standing height, of a {car}, ${BAY}. The whole car is visible, with clear space on every side and no part of it cut off by the edge of the frame. The car is filthy: thick dried mud along the lower doors and wheel arches, a film of pale brown road dust over the bonnet, roof and glass, and dirty wheels, all clearly visible under the overhead light. The car sits slightly right of centre and fills about half of the frame width, with clear empty floor to its left and in front of it. No people, no logos, no badges, no readable number plate. 16:9.` },
+      ...STATES.map((s) => ({ group: "car-edit", file: `car-${s.n}-${s.file}`, title: `${s.title} (car)`, ref: "car-1-dirty",
+        prompt: () => keep("car") + s.change("car") })),
+      { group: "bike-master", file: "bike-1-dirty", title: "Dirty bike",
+        prompt: () => `Photorealistic wide photograph, three-quarter front view from standing height, of an unbranded {bike} standing upright on a rear paddock stand, ${BAY}. If a reference image is attached, use the same room as the reference, with the motorcycle in place of the car. The motorcycle is filthy: dried mud caked on the engine, forks, wheels and mudguards, and pale brown dust over the tank and seat, all clearly visible under the overhead light. It sits slightly right of centre and fills about 55 percent of the frame width, with clear empty floor to its left. No rider, no people, no logos, no readable number plate. 16:9.` },
+      ...STATES.map((s) => ({ group: "bike-edit", file: `bike-${s.n}-${s.file}`, title: `${s.title} (bike)`, ref: "bike-1-dirty",
+        prompt: () => keep("motorcycle") + s.change("motorcycle") })),
+    ];
+
+    const store = {
+      get(key) { try { return localStorage.getItem("lustre-guide-" + key) || DEFAULTS[key]; } catch (_) { return DEFAULTS[key]; } },
+      set(key, value) { try { localStorage.setItem("lustre-guide-" + key, value); } catch (_) { /* private mode */ } },
+    };
+    const state = { car: store.get("car"), bike: store.get("bike") };
+    const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const fill = (text) => text.replaceAll("{car}", state.car.trim() || DEFAULTS.car).replaceAll("{bike}", state.bike.trim() || DEFAULTS.bike);
+
+    document.querySelectorAll(".model").forEach((box) => {
+      const m = MODELS[box.dataset.model];
+      box.innerHTML =
+        `<p class="label">Model to pick in Higgsfield</p>` +
+        `<p class="name">${esc(m.name)}<small>${esc(m.by)}</small></p>` +
+        `<p class="why">${esc(m.why)}</p>` +
+        `<ul class="chips">${m.chips.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` +
+        `<details><summary>Other models that also work</summary><ul>` +
+        m.others.map(([n, d]) => `<li><b>${esc(n)}</b>: ${esc(d)}</li>`).join("") + `</ul></details>`;
+    });
+
+    const cards = ASSETS.map((a) => {
+      const el = document.createElement("article");
+      el.className = "asset";
+      el.innerHTML =
+        `<div class="asset-head"><h3>${esc(a.title)}</h3><span class="status">Not in folder yet</span></div>` +
+        `<div class="asset-body"><p class="prompt"></p><img class="preview" alt="" hidden></div>` +
+        `<div class="asset-foot"><button class="copy" type="button">Copy prompt</button>` +
+        `<span>${a.ref ? `Reference: <code>${esc(a.ref)}</code>. ` : ""}Save as <code>${esc(a.file)}.jpg</code></span></div>`;
+      document.querySelector(`[data-assets="${a.group}"]`).append(el);
+      const card = { el, promptEl: el.querySelector(".prompt"), text: () => fill(a.prompt()), file: a.file };
+      el.querySelector(".copy").addEventListener("click", (e) => copy(card.text(), e.currentTarget));
+      return card;
+    });
+
+    function renderPrompts() { cards.forEach((c) => { c.promptEl.textContent = c.text(); }); }
+
+    async function copy(text, button) {
+      let ok = false;
+      try { await navigator.clipboard.writeText(text); ok = true; }
+      catch (_) {
+        const ta = document.createElement("textarea");
+        ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.append(ta); ta.select();
+        try { ok = document.execCommand("copy"); } catch (_) { ok = false; }
+        ta.remove();
+      }
+      button.textContent = ok ? "Copied" : "Select the text and copy it";
+      button.classList.toggle("is-done", ok);
+      window.setTimeout(() => { button.textContent = "Copy prompt"; button.classList.remove("is-done"); }, 1800);
+    }
+
+    function findStill(file) {
+      return new Promise((resolve) => {
+        const attempt = (n) => {
+          if (n >= STILL_TYPES.length) return resolve(null);
+          const url = `${DIR}/${file}.${STILL_TYPES[n]}`;
+          const img = new Image();
+          img.onload = () => resolve(url);
+          img.onerror = () => attempt(n + 1);
+          img.src = `${url}?t=${Date.now()}`;
+        };
+        attempt(0);
+      });
+    }
+
+    let run = 0;
+    async function checkFolder() {
+      const mine = ++run;
+      const found = await Promise.all(cards.map((c) => findStill(c.file)));
+      if (mine !== run) return;
+      found.forEach((url, i) => {
+        const card = cards[i];
+        card.el.classList.toggle("is-found", Boolean(url));
+        card.el.querySelector(".status").textContent = url ? "In folder" : "Not in folder yet";
+        const preview = card.el.querySelector(".preview");
+        preview.hidden = !url;
+        if (url) preview.src = url;
+      });
+      const done = found.filter(Boolean).length;
+      document.getElementById("meterFill").style.width = `${(done / cards.length) * 100}%`;
+      document.getElementById("progressText").textContent =
+        done === cards.length ? `All ${cards.length} files are in the folder` : `${done} of ${cards.length} files in the folder`;
+    }
+
+    ["car", "bike"].forEach((key) => {
+      const input = document.getElementById(key);
+      input.value = state[key];
+      input.placeholder = DEFAULTS[key];
+      input.addEventListener("input", () => { state[key] = input.value; store.set(key, input.value); renderPrompts(); });
+    });
+
+    document.getElementById("recheck").addEventListener("click", checkFolder);
+    window.addEventListener("focus", checkFolder);
+    renderPrompts();
+    checkFolder();
+  })();
+  </script>
+</body>
+</html>
